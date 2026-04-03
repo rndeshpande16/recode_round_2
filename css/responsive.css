@@ -1,0 +1,206 @@
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablet: <= 1024px */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    z-index: var(--z-sticky);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid .priority-hub {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .dashboard-grid .upcoming-classes {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .dashboard-grid .recent-feedback {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .dashboard-grid .quick-resources {
+    grid-column: 1;
+  }
+
+  .dashboard-grid .timeline-widget {
+    grid-column: 1;
+  }
+
+  .dashboard-grid .academic-performance {
+    grid-column: 1;
+  }
+
+  .graph-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .graph-sidebar-panel {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .graph-canvas {
+    min-height: 350px;
+  }
+
+  .quick-stats {
+    display: none;
+  }
+
+  .preview-meta {
+    grid-template-columns: 1fr;
+  }
+  .task-meta-item:nth-child(3) {
+    display: none;
+  }
+}
+
+/* Mobile: <= 640px */
+@media (max-width: 640px) {
+  .view-container {
+    padding: var(--space-lg);
+  }
+
+  .topbar {
+    padding: 0 var(--space-lg);
+  }
+
+  .page-title {
+    font-size: var(--text-lg);
+  }
+
+  .tasks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tasks-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .feedback-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-card {
+    padding: var(--space-lg);
+  }
+
+  .issue-card-main {
+    padding: var(--space-lg);
+  }
+
+  .gpa-value {
+    font-size: 2.5rem;
+  }
+
+  .modal {
+    max-height: 95vh;
+    margin: var(--space-md);
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-overlay {
+    padding: var(--space-md);
+  }
+
+  .command-palette-content {
+    width: 95vw;
+  }
+
+  .resource-list-quick {
+    grid-template-columns: 1fr;
+  }
+
+  .live-resources-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-group {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: var(--space-sm);
+  }
+
+  .filter-btn {
+    flex-shrink: 0;
+  }
+
+  .toast-container {
+    left: var(--space-lg);
+    right: var(--space-lg);
+    bottom: var(--space-lg);
+  }
+
+  .toast {
+    max-width: 100%;
+  }
+  .task-meta-item:nth-child(2) {
+    display: inline !important;
+  }
+}
+
+/* Large screens: >= 1400px */
+@media (min-width: 1400px) {
+  .dashboard-grid {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .tasks-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .resources-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .health-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .task-meta-item:nth-child(3),
+  .task-meta-item:nth-child(2) {
+    display: none;
+  }
+}

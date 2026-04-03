@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Nexus-Uni — The unified nervous system of a student's life. A high-density academic cockpit for tasks, feedback, resources, and knowledge."
+    />
+    <title>Nexus-Uni | Scholar's Command Center</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/feedback.css" />
+    <link rel="stylesheet" href="css/resources.css" />
+    <link rel="stylesheet" href="css/graph.css" />
+    <link rel="stylesheet" href="css/health.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- D3.js for Knowledge Graph -->
+    <script src="https://d3js.org/d3.v7.min.js" defer></script>
+  </head>
+  <body data-theme="dark" data-context="default">
+    <!-- Floating Particles Background -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- =========================================== -->
+    <!-- COMMAND PALETTE (Cmd+K)                     -->
+    <!-- =========================================== -->
+    <div
+      id="command-palette"
+      class="command-palette hidden"
+      role="dialog"
+      aria-label="Command Palette"
+    >
+      <div class="command-palette-backdrop"></div>
+      <div class="command-palette-content">
+        <div class="command-search">
+          <span class="command-search-icon">⌘</span>
+          <input
+            type="text"
+            id="command-input"
+            placeholder="Type a command or search…"
+            autocomplete="off"
+            aria-label="Command input"
+          />
+        </div>
+        <div class="command-results" id="command-results"></div>
+      </div>
+    </div>
+
+    <!-- Mobile sidebar overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- =========================================== -->
+    <!-- APP CONTAINER                               -->
+    <!-- =========================================== -->
+    <div class="app-container">
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="sidebar" role="navigation" aria-label="Main navigation">
+        <div class="sidebar-header">
+          <div class="logo">
+            <div class="logo-icon">⚡</div>
+            <span class="logo-text">Nexus-Uni</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="#dashboard" class="nav-item active" data-view="dashboard">
+            <span class="nav-icon">🎯</span>
+            <span class="nav-text">Dashboard</span>
+          </a>
+          <a href="#tasks" class="nav-item" data-view="tasks">
+            <span class="nav-icon">✓</span>
+            <span class="nav-text">Tasks</span>
+            <span class="nav-badge">11</span>
+          </a>
+          <a href="#feedback" class="nav-item" data-view="feedback">
+            <span class="nav-icon">💬</span>
+            <span class="nav-text">Feedback</span>
+            <span class="nav-badge">3</span>
+          </a>
+          <a href="#resources" class="nav-item" data-view="resources">
+            <span class="nav-icon">📚</span>
+            <span class="nav-text">Resources</span>
+          </a>
+          <a href="#graph" class="nav-item" data-view="graph">
+            <span class="nav-icon">🕸️</span>
+            <span class="nav-text">Knowledge Graph</span>
+          </a>
+          <a href="#health" class="nav-item" data-view="health">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Subject Health</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="context-indicator" id="context-indicator">
+            <div class="context-dot"></div>
+            <span class="context-text">Ready</span>
+          </div>
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            aria-label="Choose theme"
+          >
+            <span class="theme-icon">🌙</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- ===== MAIN CONTENT ===== -->
+      <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <button
+              class="hamburger"
+              id="hamburger"
+              aria-label="Toggle navigation"
+            >
+              ☰
+            </button>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                padding-left: 8px;
+              "
+            >
+              <span
+                id="user-greeting"
+                style="
+                  font-size: var(--text-xs);
+                  color: var(--text-secondary);
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                "
+              ></span>
+              <h1
+                class="page-title gradient-text"
+                id="page-title"
+                style="margin: 0; font-size: 1.5rem; line-height: 1.2"
+              >
+                Dashboard
+              </h1>
+            </div>
+          </div>
+          <div class="topbar-right">
+            <div class="quick-stats" id="quick-stats">
+              <div class="stat-item">
+                <span class="stat-label">Tasks Due</span>
+                <span class="stat-value">5</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Avg Grade</span>
+                <span class="stat-value">83%</span>
+              </div>
+            </div>
+            <button
+              class="cmd-hint"
+              id="cmd-hint"
+              aria-label="Open command palette"
+            >
+              <kbd>⌘</kbd><kbd>K</kbd>
+            </button>
+          </div>
+        </header>
+
+        <!-- ===== VIEW CONTAINER ===== -->
+        <div class="view-container" id="view-container">
+          <!-- ========== DASHBOARD VIEW ========== -->
+          <section id="dashboard-view" class="view active">
+            <!-- Hero Carousel -->
+            <div class="carousel" data-scroll="fade-up">
+              <div class="carousel-track">
+                <div class="carousel-slide">
+                  <img
+                    src="assets/hero-banner.png"
+                    alt="Nexus-Uni Knowledge Network"
+                  />
+                  <div class="carousel-slide-overlay">
+                    <div class="carousel-slide-title">Welcome to Nexus-Uni</div>
+                    <div class="carousel-slide-desc">
+                      Your unified academic command center — tasks, feedback,
+                      resources, all in one place.
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <img
+                    src="assets/carousel-algorithms.png"
+                    alt="Data Structures & Algorithms"
+                  />
+                  <div class="carousel-slide-overlay">
+                    <div class="carousel-slide-title">
+                      Data Structures & Algorithms
+                    </div>
+                    <div class="carousel-slide-desc">
+                      Master trees, graphs, and complexity analysis with
+                      interactive visualizations.
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/carousel-math.png" alt="Mathematics" />
+                  <div class="carousel-slide-overlay">
+                    <div class="carousel-slide-title">
+                      Mathematics & Linear Algebra
+                    </div>
+                    <div class="carousel-slide-desc">
+                      Explore eigenvalues, matrices, and the beauty of
+                      mathematical proof.
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="assets/carousel-ai.png" alt="Machine Learning" />
+                  <div class="carousel-slide-overlay">
+                    <div class="carousel-slide-title">
+                      Machine Learning & AI
+                    </div>
+                    <div class="carousel-slide-desc">
+                      Build neural networks, understand transformers, and push
+                      the boundaries of AI.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="carousel-btn carousel-btn-prev"
+                aria-label="Previous slide"
+              >
+                ‹
+              </button>
+              <button
+                class="carousel-btn carousel-btn-next"
+                aria-label="Next slide"
+              >
+                ›
+              </button>
+              <div class="carousel-dots"></div>
+            </div>
+
+            <div class="dashboard-grid">
+              <!-- Priority Hub -->
+              <div class="card priority-hub aurora-bg" data-scroll="fade-left">
+                <div class="card-header">
+                  <h2 class="card-title">🎯 Priority Hub</h2>
+                  <div class="card-actions">
+                    <span
+                      class="badge badge-neutral"
+                      style="font-size: 0.65rem; padding: 10px"
+                      >Gravity = Urgency × Weight</span
+                    >
+                    <button
+                      class="btn-icon btn-ripple"
+                      id="add-task-btn"
+                      title="Add new task"
+                      style="color: var(--color-primary); font-size: 1.1rem"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="task-list" id="priority-tasks"></div>
+                </div>
+              </div>
+
+              <!-- Upcoming Task Timeline -->
+              <div class="card timeline-widget" data-scroll="fade-up">
+                <div class="card-header">
+                  <h2 class="card-title">⏳ Upcoming Timeline</h2>
+                  <a href="#tasks" class="card-link" data-view="tasks"
+                    >View all →</a
+                  >
+                </div>
+                <div class="card-content" style="padding: 0">
+                  <div class="timeline-container" id="dashboard-timeline"></div>
+                </div>
+              </div>
+
+              <!-- Upcoming Classes -->
+              <div class="card upcoming-classes" data-scroll="fade-right">
+                <div class="card-header">
+                  <h2 class="card-title">📅 Today's Schedule</h2>
+                </div>
+                <div class="card-content">
+                  <div class="class-list" id="upcoming-classes"></div>
+                </div>
+              </div>
+
+              <!-- Academic Performance Chart -->
+              <div
+                class="card academic-performance"
+                data-scroll="fade-up"
+                data-scroll-delay="1"
+              >
+                <div class="card-header">
+                  <h2 class="card-title">📈 Performance Analytics</h2>
+                </div>
+                <div
+                  class="card-content"
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <div id="radar-chart" style="height: 260px"></div>
+                  <div
+                    id="performance-insights"
+                    style="
+                      width: 100%;
+                      margin-top: var(--space-md);
+                      padding: var(--space-md);
+                      background: var(--bg-tertiary);
+                      border-radius: var(--radius-md);
+                      font-size: var(--text-sm);
+                    "
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Recent Feedback -->
+              <div
+                class="card recent-feedback"
+                data-scroll="fade-right"
+                data-scroll-delay="1"
+              >
+                <div class="card-header">
+                  <h2 class="card-title">💬 Recent Feedback</h2>
+                  <a href="#feedback" class="card-link" data-view="feedback"
+                    >View all →</a
+                  >
+                </div>
+                <div class="card-content">
+                  <div class="feedback-list" id="recent-feedback"></div>
+                </div>
+              </div>
+
+              <!-- Quick Resources -->
+              <div
+                class="card quick-resources"
+                data-scroll="fade-up"
+                data-scroll-delay="2"
+              >
+                <div class="card-header">
+                  <h2 class="card-title">📚 Quick Access</h2>
+                  <a href="#resources" class="card-link" data-view="resources"
+                    >Browse all →</a
+                  >
+                </div>
+                <div class="card-content" id="quick-resources"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ========== TASKS VIEW ========== -->
+          <section id="tasks-view" class="view">
+            <div class="tasks-container">
+              <div class="tasks-toolbar">
+                <div class="search-box">
+                  <input
+                    type="text"
+                    placeholder="Search tasks…"
+                    class="search-input"
+                    aria-label="Search tasks"
+                  />
+                </div>
+                <div class="filter-group">
+                  <button class="filter-btn active" data-filter="all">
+                    All Tasks
+                  </button>
+                  <button class="filter-btn" data-filter="high">
+                    ⚠ High Gravity
+                  </button>
+                  <button class="filter-btn" data-filter="due">
+                    ⏰ Due Soon
+                  </button>
+                  <button class="filter-btn" data-filter="completed">
+                    ✅ Completed
+                  </button>
+                </div>
+                <button
+                  class="btn btn-primary btn-ripple"
+                  id="add-task-view-btn"
+                >
+                  <span>+</span> Add Task
+                </button>
+              </div>
+              <div class="tasks-grid" id="tasks-grid"></div>
+            </div>
+          </section>
+
+          <!-- ========== FEEDBACK VIEW ========== -->
+          <section id="feedback-view" class="view">
+            <div class="feedback-container">
+              <div class="feedback-toolbar">
+                <div class="filter-group">
+                  <button class="filter-btn active" data-status="all">
+                    All
+                  </button>
+                  <button class="filter-btn" data-status="open">● Open</button>
+                  <button class="filter-btn" data-status="in-progress">
+                    ◐ In Progress
+                  </button>
+                  <button class="filter-btn" data-status="resolved">
+                    ✓ Resolved
+                  </button>
+                </div>
+              </div>
+              <div class="feedback-grid" id="feedback-grid"></div>
+            </div>
+          </section>
+
+          <!-- ========== RESOURCES VIEW ========== -->
+          <section id="resources-view" class="view">
+            <div class="resources-container">
+              <div class="resources-toolbar">
+                <div class="search-box">
+                  <input
+                    type="text"
+                    placeholder="Search resources…"
+                    class="search-input"
+                    id="resource-search"
+                    aria-label="Search resources"
+                  />
+                </div>
+                <div class="tag-filters" id="tag-filters"></div>
+              </div>
+              <div class="resources-grid" id="resources-grid"></div>
+            </div>
+          </section>
+
+          <!-- ========== KNOWLEDGE GRAPH VIEW ========== -->
+          <section id="graph-view" class="view">
+            <div class="graph-layout">
+              <div class="graph-sidebar-panel">
+                <div class="card" style="height: 100%">
+                  <div class="card-header">
+                    <h2 class="card-title">Controls</h2>
+                  </div>
+                  <div class="card-content">
+                    <div class="graph-controls">
+                      <button
+                        class="btn btn-secondary btn-ripple"
+                        id="graph-zoom-in"
+                      >
+                        <span style="font-size: 1.2rem">+</span> Zoom In
+                      </button>
+                      <button
+                        class="btn btn-secondary btn-ripple"
+                        id="graph-zoom-out"
+                      >
+                        <span style="font-size: 1.2rem">−</span> Zoom Out
+                      </button>
+                      <button
+                        class="btn btn-secondary btn-ripple"
+                        id="graph-reset"
+                      >
+                        <span style="font-size: 1.2rem">⟲</span> Reset View
+                      </button>
+                    </div>
+                    <div class="graph-legend-section">
+                      <div class="graph-legend-title">Legend</div>
+                      <div
+                        class="graph-legend-list"
+                        id="graph-legend-list"
+                      ></div>
+                    </div>
+                    <div class="graph-tip">
+                      💡 <strong>Tip:</strong> Hover over nodes to see
+                      connections. Drag nodes to rearrange. Use scroll to zoom.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="graph-main-panel">
+                <div class="graph-title-area">
+                  <h2 class="gradient-text" style="font-size: var(--text-2xl)">
+                    Subject Relationship Network
+                  </h2>
+                  <p>
+                    Explore how your courses connect through shared concepts and
+                    topics
+                  </p>
+                </div>
+                <div class="graph-canvas" id="graph-canvas"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ========== SUBJECT HEALTH VIEW ========== -->
+          <section id="health-view" class="view">
+            <div class="health-container">
+              <div class="health-header">
+                <h2 class="gradient-text" style="font-size: var(--text-2xl)">
+                  Subject Health Dashboard
+                </h2>
+                <p>
+                  Monitor your academic standing across all courses with dynamic
+                  health indicators
+                </p>
+              </div>
+              <div class="health-grid" id="health-grid"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-container"></div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts (order matters: data first, then modules, then app) -->
+    <script src="js/data.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/drag-drop.js"></script>
+    <script src="js/command-palette.js"></script>
+    <script src="js/priority-hub.js"></script>
+    <script src="js/feedback-manager.js"></script>
+    <script src="js/resource-manager.js"></script>
+    <script src="js/knowledge-graph.js"></script>
+    <script src="js/subject-health.js"></script>
+    <script src="js/context-adapter.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
