@@ -17,6 +17,10 @@ const CommandPalette = {
     { icon: '➕', label: 'Add New Task', action: () => { App.navigateTo('tasks'); PriorityHub.openAddModal(); }, category: 'Action' },
     { icon: '🌙', label: 'Toggle Theme', action: () => { ThemeManager.setTheme(ThemeManager.getTheme() === 'dark' ? 'light' : 'dark'); }, category: 'Action' },
     { icon: '📡', label: 'Simulate Class Session', action: () => { ContextAdapter.toggleSimulation(); }, category: 'Action' },
+    { icon: '🏫', label: 'Enter Lecture Mode', action: () => { ContextAdapter.activateMode('lecture'); }, category: 'Focus Modes' },
+    { icon: '🧠', label: 'Enter Deep Work Mode', action: () => { ContextAdapter.activateMode('deep_work'); }, category: 'Focus Modes' },
+    { icon: '⚡', label: 'Enter Quick Notes Mode', action: () => { ContextAdapter.activateMode('quick_notes'); }, category: 'Focus Modes' },
+    { icon: '🔙', label: 'Exit Focus Mode', action: () => { ContextAdapter.exitMode(); }, category: 'Focus Modes' },
   ],
 
   init() {
@@ -58,6 +62,7 @@ const CommandPalette = {
       if (this.isOpen || e.metaKey || e.ctrlKey || e.altKey) return;
       const target = e.target;
       if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') return;
+      if (target.closest('.ql-editor') || target.isContentEditable) return;
       const views = ['dashboard', 'tasks', 'feedback', 'resources', 'graph', 'health'];
       const num = parseInt(e.key);
       if (num >= 1 && num <= 6) {

@@ -61,8 +61,20 @@
 
   .graph-sidebar-panel {
     width: 100%;
+    flex-direction: column;
+  }
+
+  .graph-controls {
     flex-direction: row;
-    overflow-x: auto;
+  }
+
+  .graph-controls .btn-secondary {
+    flex: 1;
+  }
+
+  .graph-legend-list {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .graph-canvas {
@@ -79,6 +91,21 @@
   .task-meta-item:nth-child(3) {
     display: none;
   }
+  .task-meta-item:nth-child(2) {
+    display: block !important;
+  }
+}
+
+.task-gravity-score.critical {
+  height: 22.5px;
+}
+
+.task-gravity-score.high {
+  height: 22.5px;
+}
+
+.task-gravity-score.medium {
+  height: 22.5px;
 }
 
 /* Mobile: <= 640px */
@@ -202,6 +229,9 @@
   .task-meta-item:nth-child(3),
   .task-meta-item:nth-child(2) {
     display: none;
+  }
+  .card {
+    width: 100%;
   }
 }
 

@@ -54,7 +54,9 @@
 /* D3 specific */
 .graph-canvas .node circle {
   cursor: pointer;
-  transition: r 0.2s ease, stroke-width 0.2s ease;
+  transition:
+    r 0.2s ease,
+    stroke-width 0.2s ease;
 }
 
 .graph-canvas .node text {
