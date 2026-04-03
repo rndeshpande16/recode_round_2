@@ -147,7 +147,7 @@ const PriorityHub = {
         const cls = this._getGravityClass(t.gravity);
         const due = this._formatDate(t.dueDate);
         return `
-        <div class="task-card tilt-card ${t.completed ? "completed" : ""}" data-id="${t.id}" data-scroll="fade-up" data-scroll-delay="${(i % 4) + 1}">
+        <div class="task-card tilt-card ${t.completed ? "completed" : ""}" draggable="true" data-id="${t.id}" data-scroll="fade-up" data-scroll-delay="${(i % 4) + 1}">
           <div class="task-card-header">
             <div style="display:flex;align-items:flex-start;gap:var(--space-md);">
               <label class="task-checkbox" onclick="event.stopPropagation()" style="margin-top:2px;">
@@ -180,6 +180,8 @@ const PriorityHub = {
       .join("");
 
     container.classList.add("anim-stagger");
+
+    DragDrop.init(container, ".task-card");
 
     if (typeof ScrollObserver !== "undefined" && ScrollObserver.observer)
       ScrollObserver.observe();
