@@ -1,5 +1,3 @@
-<style>*{text-align:justify;text-align-last:left;}h1,h2,h3,h4,h5,h6{text-align:left;}</style>
-
 # Nexus-Uni: Scholar's Command Center
 
 Nexus-Uni is the unified nervous system for a student's technical and academic life. It is designed as a high-density, centralized academic cockpit that offers powerful tools for managing tasks, tracking educational feedback, organizing resources, and visualizing knowledge.
