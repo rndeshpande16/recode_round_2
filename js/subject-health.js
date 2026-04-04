@@ -13,9 +13,9 @@ const SubjectHealth = {
   },
 
   _getTrendIcon(trend) {
-    if (trend === 'up') return '↑';
-    if (trend === 'down') return '↓';
-    return '→';
+    if (trend === 'up') return '<i class="fa-solid fa-arrow-up"></i>';
+    if (trend === 'down') return '<i class="fa-solid fa-arrow-down"></i>';
+    return '<i class="fa-solid fa-arrow-right"></i>';
   },
 
   render() {

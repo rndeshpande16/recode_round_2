@@ -4,17 +4,24 @@
 const ResourceManager = {
   activeTag: null,
   searchQuery: '',
+  dropdownSearchQuery: '',
 
   init() {
     this.renderDashboardResources();
     this.renderResourcesView();
     this.renderTagFilters();
     this.initSearch();
+    this.initDropdown();
   },
 
   _getTypeIcon(type) {
-    const icons = { pdf: '📄', video: '🎬', article: '📰', link: '🔗' };
-    return icons[type] || '📁';
+    const icons = { 
+      pdf: '<i class="fa-regular fa-file-pdf"></i>', 
+      video: '<i class="fa-solid fa-video"></i>', 
+      article: '<i class="fa-regular fa-newspaper"></i>', 
+      link: '<i class="fa-solid fa-link"></i>' 
+    };
+    return icons[type] || '<i class="fa-regular fa-folder"></i>';
   },
 
   _getTypeLabel(type) {
@@ -59,7 +66,7 @@ const ResourceManager = {
     }
 
     if (resources.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-text">No resources match your search</div></div>';
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-book"></i></div><div class="empty-state-text">No resources match your search</div></div>';
       return;
     }
 
@@ -93,15 +100,28 @@ const ResourceManager = {
     const allTags = new Set();
     NexusData.resources.forEach((r) => r.tags.forEach((t) => allTags.add(t)));
 
-    const sorted = [...allTags].sort();
-    container.innerHTML = `<span class="tag ${!this.activeTag ? 'active' : ''}" data-tag="">All</span>` +
-      sorted.map((tag) => `<span class="tag ${this.activeTag === tag ? 'active' : ''}" data-tag="${tag}">${tag}</span>`).join('');
+    let sorted = [...allTags].sort();
+    
+    // Filter tags based on dropdown search
+    if (this.dropdownSearchQuery) {
+      const q = this.dropdownSearchQuery.toLowerCase();
+      sorted = sorted.filter(tag => tag.toLowerCase().includes(q));
+    }
 
-    container.querySelectorAll('.tag').forEach((el) => {
-      el.addEventListener('click', () => {
+    let html = `<div class="dropdown-option ${!this.activeTag ? 'active' : ''}" data-tag="">All Filters</div>`;
+    html += sorted.map((tag) => `<div class="dropdown-option ${this.activeTag === tag ? 'active' : ''}" data-tag="${tag}">${tag}</div>`).join('');
+    
+    container.innerHTML = html;
+
+    container.querySelectorAll('.dropdown-option').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
         this.activeTag = el.dataset.tag || null;
+        const label = document.getElementById('selected-filter-text');
+        if (label) label.textContent = `Filter: ${this.activeTag || 'All'}`;
         this.renderTagFilters();
         this.renderResourcesView();
+        this.toggleDropdown(false);
       });
     });
   },
@@ -113,6 +133,38 @@ const ResourceManager = {
         this.searchQuery = input.value;
         this.renderResourcesView();
       });
+    }
+
+    const dropdownSearch = document.getElementById('custom-dropdown-search');
+    if (dropdownSearch) {
+      dropdownSearch.addEventListener('input', (e) => {
+        this.dropdownSearchQuery = e.target.value;
+        this.renderTagFilters();
+      });
+      dropdownSearch.addEventListener('click', (e) => e.stopPropagation());
+    }
+  },
+
+  initDropdown() {
+    const header = document.getElementById('custom-dropdown-header');
+    if (header) {
+      header.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrapper = document.getElementById('resource-tag-dropdown-wrapper');
+        const isOpen = wrapper.classList.contains('open');
+        this.toggleDropdown(!isOpen);
+      });
+    }
+
+    document.addEventListener('click', () => {
+      this.toggleDropdown(false);
+    });
+  },
+
+  toggleDropdown(show) {
+    const wrapper = document.getElementById('resource-tag-dropdown-wrapper');
+    if (wrapper) {
+      wrapper.classList.toggle('open', show);
     }
   },
 
@@ -135,7 +187,7 @@ const ResourceManager = {
         <div class="preview-embed-placeholder">
           <div class="placeholder-icon">${this._getTypeIcon(resource.type)}</div>
           <div class="placeholder-text">${resource.type === 'article' ? 'Article preview' : 'External link'}</div>
-          <a href="${resource.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Open in new tab ↗</a>
+          <a href="${resource.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Open in new tab <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         </div>`;
     }
 
@@ -171,7 +223,7 @@ const ResourceManager = {
                 ${resource.tags.map((t) => `<span class="tag">${t}</span>`).join('')}
               </div>
               <div class="preview-actions">
-                <a href="${resource.url}" target="_blank" rel="noopener" class="btn btn-primary">Open Resource ↗</a>
+                <a href="${resource.url}" target="_blank" rel="noopener" class="btn btn-primary">Open Resource <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                 <button class="btn btn-secondary" onclick="ResourceManager.closePreview()">Close</button>
               </div>
             </div>

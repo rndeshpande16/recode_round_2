@@ -19,8 +19,11 @@
 }
 
 .sidebar-header {
-  padding: var(--space-xl);
+  padding: var(--space-lg) var(--space-xl);
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logo {
@@ -106,7 +109,139 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: opacity var(--transition-base), width var(--transition-base);
 }
+
+/* Sidebar Focus Modes */
+.sidebar-focus-modes {
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border-top: 1px solid var(--border-color);
+}
+
+.focus-modes-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-xs);
+  padding-left: var(--space-md);
+}
+
+.focus-mode-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: var(--space-md) !important;
+  padding: var(--space-sm) var(--space-md) !important;
+  font-size: var(--text-xs) !important;
+  width: calc(100% - var(--space-md) * 2) !important;
+  margin: 0 var(--space-md) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  border: 1px solid transparent !important;
+  background: var(--bg-tertiary) !important;
+}
+
+.focus-mode-btn i {
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.focus-mode-btn span {
+  display: block;
+}
+
+.focus-mode-btn i {
+  width: 16px;
+  text-align: center;
+}
+
+/* Sidebar Toggle */
+.sidebar-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle:hover {
+  background: var(--bg-surface-hover);
+  color: var(--color-primary);
+}
+
+/* Sidebar Collapsed State */
+.sidebar-collapsed .sidebar {
+  width: 70px;
+}
+
+.sidebar-collapsed .logo-text,
+.sidebar-collapsed .nav-text,
+.sidebar-collapsed .nav-badge,
+.sidebar-collapsed .focus-modes-title,
+.sidebar-collapsed .focus-mode-btn span,
+.sidebar-collapsed .context-text {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-header {
+  padding: var(--space-lg) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.sidebar-collapsed .logo {
+  justify-content: center;
+}
+
+.sidebar-collapsed .nav-item {
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.sidebar-collapsed .nav-icon {
+  margin: 0;
+}
+
+.sidebar-collapsed .focus-mode-btn {
+  justify-content: center !important;
+  padding: var(--space-md) 0 !important;
+  width: 40px !important;
+  margin: 4px auto !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.sidebar-collapsed .focus-mode-btn i {
+  margin: 0 !important;
+  font-size: 1.2rem !important;
+}
+
+.sidebar-collapsed .focus-mode-btn span {
+  display: none !important;
+}
+
+.sidebar-collapsed .sidebar-footer {
+  flex-direction: column;
+  padding: var(--space-lg) 0;
+}
+
+.sidebar-collapsed .context-indicator {
+  justify-content: center;
+}
+
 
 .nav-badge {
   margin-left: auto;

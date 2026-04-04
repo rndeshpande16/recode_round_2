@@ -8,19 +8,20 @@ const CommandPalette = {
   filteredItems: [],
 
   commands: [
-    { icon: '🎯', label: 'Go to Dashboard', action: () => App.navigateTo('dashboard'), category: 'Navigation' },
-    { icon: '✓', label: 'Go to Tasks', action: () => App.navigateTo('tasks'), category: 'Navigation' },
-    { icon: '💬', label: 'Go to Feedback', action: () => App.navigateTo('feedback'), category: 'Navigation' },
-    { icon: '📚', label: 'Go to Resources', action: () => App.navigateTo('resources'), category: 'Navigation' },
-    { icon: '🕸️', label: 'Go to Knowledge Graph', action: () => App.navigateTo('graph'), category: 'Navigation' },
-    { icon: '📊', label: 'Go to Subject Health', action: () => App.navigateTo('health'), category: 'Navigation' },
-    { icon: '➕', label: 'Add New Task', action: () => { App.navigateTo('tasks'); PriorityHub.openAddModal(); }, category: 'Action' },
-    { icon: '🌙', label: 'Toggle Theme', action: () => { ThemeManager.setTheme(ThemeManager.getTheme() === 'dark' ? 'light' : 'dark'); }, category: 'Action' },
-    { icon: '📡', label: 'Simulate Class Session', action: () => { ContextAdapter.toggleSimulation(); }, category: 'Action' },
-    { icon: '🏫', label: 'Enter Lecture Mode', action: () => { ContextAdapter.activateMode('lecture'); }, category: 'Focus Modes' },
-    { icon: '🧠', label: 'Enter Deep Work Mode', action: () => { ContextAdapter.activateMode('deep_work'); }, category: 'Focus Modes' },
-    { icon: '⚡', label: 'Enter Quick Notes Mode', action: () => { ContextAdapter.activateMode('quick_notes'); }, category: 'Focus Modes' },
-    { icon: '🔙', label: 'Exit Focus Mode', action: () => { ContextAdapter.exitMode(); }, category: 'Focus Modes' },
+    { icon: '<i class="fa-solid fa-bullseye"></i>', label: 'Go to Dashboard', action: () => App.navigateTo('dashboard'), category: 'Navigation' },
+    { icon: '<i class="fa-solid fa-calendar-days"></i>', label: 'Go to Calendar', action: () => App.navigateTo('calendar'), category: 'Navigation' },
+    { icon: '<i class="fa-solid fa-check"></i>', label: 'Go to Tasks', action: () => App.navigateTo('tasks'), category: 'Navigation' },
+    { icon: '<i class="fa-solid fa-comment-dots"></i>', label: 'Go to Feedback', action: () => App.navigateTo('feedback'), category: 'Navigation' },
+    { icon: '<i class="fa-solid fa-book"></i>', label: 'Go to Resources', action: () => App.navigateTo('resources'), category: 'Navigation' },
+    { icon: '<i class="fa-solid fa-diagram-project"></i>', label: 'Go to Knowledge Graph', action: () => App.navigateTo('graph'), category: 'Navigation' },
+    { icon: '<i class="fa-solid fa-chart-simple"></i>', label: 'Go to Subject Health', action: () => App.navigateTo('health'), category: 'Navigation' },
+    { icon: '<i class="fa-solid fa-plus"></i>', label: 'Add New Task', action: () => { App.navigateTo('tasks'); PriorityHub.openAddModal(); }, category: 'Action' },
+    { icon: '<i class="fa-solid fa-moon"></i>', label: 'Toggle Theme', action: () => { ThemeManager.setTheme(ThemeManager.getTheme() === 'dark' ? 'light' : 'dark'); }, category: 'Action' },
+    { icon: '<i class="fa-solid fa-satellite-dish"></i>', label: 'Simulate Class Session', action: () => { ContextAdapter.toggleSimulation(); }, category: 'Action' },
+    { icon: '<i class="fa-solid fa-graduation-cap"></i>', label: 'Enter Lecture Mode', action: () => { ContextAdapter.activateMode('lecture'); }, category: 'Focus Modes' },
+    { icon: '<i class="fa-solid fa-brain"></i>', label: 'Enter Deep Work Mode', action: () => { ContextAdapter.activateMode('deep_work'); }, category: 'Focus Modes' },
+    { icon: '<i class="fa-solid fa-bolt-lightning"></i>', label: 'Enter Quick Notes Mode', action: () => { ContextAdapter.activateMode('quick_notes'); }, category: 'Focus Modes' },
+    { icon: '<i class="fa-solid fa-arrow-left"></i>', label: 'Exit Focus Mode', action: () => { ContextAdapter.exitMode(); }, category: 'Focus Modes' },
   ],
 
   init() {
@@ -28,7 +29,7 @@ const CommandPalette = {
     NexusData.tasks.forEach((task) => {
       const subject = NexusData.getSubject(task.subjectId);
       this.commands.push({
-        icon: '📌',
+        icon: '<i class="fa-solid fa-paperclip"></i>',
         label: task.title,
         hint: subject ? subject.code : '',
         action: () => App.navigateTo('tasks'),
@@ -39,7 +40,7 @@ const CommandPalette = {
     // Add resource commands
     NexusData.resources.forEach((res) => {
       this.commands.push({
-        icon: res.type === 'pdf' ? '📄' : res.type === 'video' ? '🎬' : '🔗',
+        icon: res.type === 'pdf' ? '<i class="fa-regular fa-file-pdf"></i>' : res.type === 'video' ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-link"></i>',
         label: res.title,
         action: () => { App.navigateTo('resources'); setTimeout(() => ResourceManager.openPreview(res.id), 300); },
         category: 'Resource',
@@ -63,9 +64,9 @@ const CommandPalette = {
       const target = e.target;
       if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') return;
       if (target.closest('.ql-editor') || target.isContentEditable) return;
-      const views = ['dashboard', 'tasks', 'feedback', 'resources', 'graph', 'health'];
+      const views = ['dashboard', 'calendar', 'tasks', 'feedback', 'resources', 'graph', 'health'];
       const num = parseInt(e.key);
-      if (num >= 1 && num <= 6) {
+      if (num >= 1 && num <= 7) {
         e.preventDefault();
         App.navigateTo(views[num - 1]);
       }

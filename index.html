@@ -9,13 +9,14 @@
     />
     <title>Nexus-Uni | Scholar's Command Center</title>
     <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon" />
-    <!-- Fonts -->
+    <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css" />
@@ -26,6 +27,7 @@
     <link rel="stylesheet" href="css/resources.css" />
     <link rel="stylesheet" href="css/graph.css" />
     <link rel="stylesheet" href="css/health.css" />
+    <link rel="stylesheet" href="css/calendar.css" />
     <link rel="stylesheet" href="css/animations.css" />
     <link rel="stylesheet" href="css/responsive.css" />
 
@@ -160,7 +162,7 @@
       <div class="command-palette-backdrop"></div>
       <div class="command-palette-content">
         <div class="command-search">
-          <span class="command-search-icon">⌘</span>
+          <span class="command-search-icon"><i class="fa-solid fa-terminal"></i></span>
           <input
             type="text"
             id="command-input"
@@ -184,39 +186,53 @@
       <aside class="sidebar" role="navigation" aria-label="Main navigation">
         <div class="sidebar-header">
           <div class="logo">
-            <div class="logo-icon">⚡</div>
+            <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
             <span class="logo-text">Nexus-Uni</span>
           </div>
+          <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
         </div>
 
         <nav class="sidebar-nav">
           <a href="#dashboard" class="nav-item active" data-view="dashboard">
-            <span class="nav-icon">🎯</span>
+            <span class="nav-icon"><i class="fa-solid fa-bullseye"></i></span>
             <span class="nav-text">Dashboard</span>
           </a>
+          <a href="#calendar" class="nav-item" data-view="calendar">
+            <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-text">Calendar</span>
+          </a>
           <a href="#tasks" class="nav-item" data-view="tasks">
-            <span class="nav-icon">✓</span>
+            <span class="nav-icon"><i class="fa-solid fa-check"></i></span>
             <span class="nav-text">Tasks</span>
             <span class="nav-badge">11</span>
           </a>
           <a href="#feedback" class="nav-item" data-view="feedback">
-            <span class="nav-icon">💬</span>
+            <span class="nav-icon"><i class="fa-solid fa-comment-dots"></i></span>
             <span class="nav-text">Feedback</span>
             <span class="nav-badge">3</span>
           </a>
           <a href="#resources" class="nav-item" data-view="resources">
-            <span class="nav-icon">📚</span>
+            <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
             <span class="nav-text">Resources</span>
           </a>
           <a href="#graph" class="nav-item" data-view="graph">
-            <span class="nav-icon">🕸️</span>
+            <span class="nav-icon"><i class="fa-solid fa-diagram-project"></i></span>
             <span class="nav-text">Knowledge Graph</span>
           </a>
           <a href="#health" class="nav-item" data-view="health">
-            <span class="nav-icon">📊</span>
+            <span class="nav-icon"><i class="fa-solid fa-chart-simple"></i></span>
             <span class="nav-text">Subject Health</span>
           </a>
         </nav>
+
+        <div class="sidebar-focus-modes">
+          <div class="focus-modes-title">Focus Modes</div>
+          <button class="btn btn-sm focus-mode-btn" onclick="ContextAdapter.activateMode('lecture')"><i class="fa-solid fa-graduation-cap"></i> <span>Lecture</span></button>
+          <button class="btn btn-sm focus-mode-btn" onclick="ContextAdapter.activateMode('deep_work')"><i class="fa-solid fa-brain"></i> <span>Deep Work</span></button>
+          <button class="btn btn-sm focus-mode-btn" onclick="ContextAdapter.activateMode('quick_notes')"><i class="fa-solid fa-bolt-lightning"></i> <span>Quick Notes</span></button>
+        </div>
 
         <div class="sidebar-footer">
           <div class="context-indicator" id="context-indicator">
@@ -228,7 +244,7 @@
             id="theme-toggle"
             aria-label="Choose theme"
           >
-            <span class="theme-icon">🌙</span>
+            <span class="theme-icon"><i class="fa-solid fa-moon"></i></span>
           </button>
         </div>
       </aside>
@@ -243,7 +259,7 @@
               id="hamburger"
               aria-label="Toggle navigation"
             >
-              ☰
+              <i class="fa-solid fa-bars"></i>
             </button>
             <div
               style="
@@ -297,6 +313,7 @@
         <div class="view-container" id="view-container">
           <!-- ========== DASHBOARD VIEW ========== -->
           <section id="dashboard-view" class="view active">
+            <div id="welcome-section" class="welcome-section"></div>
             <!-- Hero Carousel -->
             <div class="carousel" data-scroll="fade-up">
               <div class="carousel-track">
@@ -372,12 +389,12 @@
               <!-- Priority Hub -->
               <div class="card priority-hub aurora-bg" data-scroll="fade-left">
                 <div class="card-header">
-                  <h2 class="card-title">🎯 Priority Hub</h2>
+                  <h2 class="card-title"><i class="fa-solid fa-bullseye"></i> Priority Hub</h2>
                   <div class="card-actions">
                     <span
                       class="badge badge-neutral"
                       style="font-size: 0.65rem; padding: 10px"
-                      >Gravity = Urgency × Weight</span
+                      >Gravity = Urgency &times; Weight</span
                     >
                     <button
                       class="btn-icon btn-ripple"
@@ -385,7 +402,7 @@
                       title="Add new task"
                       style="color: var(--color-primary); font-size: 1.1rem"
                     >
-                      +
+                      <i class="fa-solid fa-plus"></i>
                     </button>
                   </div>
                 </div>
@@ -397,9 +414,9 @@
               <!-- Upcoming Task Timeline -->
               <div class="card timeline-widget" data-scroll="fade-up">
                 <div class="card-header">
-                  <h2 class="card-title">⏳ Upcoming Timeline</h2>
+                  <h2 class="card-title"><i class="fa-regular fa-hourglass-half"></i> Upcoming Timeline</h2>
                   <a href="#tasks" class="card-link" data-view="tasks"
-                    >View all →</a
+                    >View all &rarr;</a
                   >
                 </div>
                 <div class="card-content" style="padding: 0">
@@ -410,7 +427,7 @@
               <!-- Upcoming Classes -->
               <div class="card upcoming-classes" data-scroll="fade-right">
                 <div class="card-header">
-                  <h2 class="card-title">📅 Today's Schedule</h2>
+                  <h2 class="card-title"><i class="fa-regular fa-calendar-days"></i> Today's Schedule</h2>
                 </div>
                 <div class="card-content">
                   <div class="class-list" id="upcoming-classes"></div>
@@ -424,7 +441,7 @@
                 data-scroll-delay="1"
               >
                 <div class="card-header">
-                  <h2 class="card-title">📈 Performance Analytics</h2>
+                  <h2 class="card-title"><i class="fa-solid fa-chart-line"></i> Performance Analytics</h2>
                 </div>
                 <div
                   class="card-content"
@@ -457,9 +474,9 @@
                 data-scroll-delay="1"
               >
                 <div class="card-header">
-                  <h2 class="card-title">💬 Recent Feedback</h2>
+                  <h2 class="card-title"><i class="fa-regular fa-comment-dots"></i> Recent Feedback</h2>
                   <a href="#feedback" class="card-link" data-view="feedback"
-                    >View all →</a
+                    >View all &rarr;</a
                   >
                 </div>
                 <div class="card-content">
@@ -474,9 +491,9 @@
                 data-scroll-delay="2"
               >
                 <div class="card-header">
-                  <h2 class="card-title">📚 Quick Access</h2>
+                  <h2 class="card-title"><i class="fa-solid fa-book"></i> Quick Access</h2>
                   <a href="#resources" class="card-link" data-view="resources"
-                    >Browse all →</a
+                    >Browse all &rarr;</a
                   >
                 </div>
                 <div class="card-content" id="quick-resources"></div>
@@ -501,13 +518,13 @@
                     All Tasks
                   </button>
                   <button class="filter-btn" data-filter="high">
-                    ⚠ High Gravity
+                    <i class="fa-solid fa-triangle-exclamation" style="color: var(--color-danger)"></i> High Gravity
                   </button>
                   <button class="filter-btn" data-filter="due">
-                    ⏰ Due Soon
+                    <i class="fa-regular fa-clock" style="color: var(--color-warning)"></i> Due Soon
                   </button>
                   <button class="filter-btn" data-filter="completed">
-                    ✅ Completed
+                    <i class="fa-solid fa-circle-check" style="color: var(--color-success)"></i> Completed
                   </button>
                 </div>
                 <button
@@ -529,12 +546,12 @@
                   <button class="filter-btn active" data-status="all">
                     All
                   </button>
-                  <button class="filter-btn" data-status="open">● Open</button>
+                  <button class="filter-btn" data-status="open"><i class="fa-solid fa-circle" style="color: var(--color-danger); font-size: 0.8rem"></i> Open</button>
                   <button class="filter-btn" data-status="in-progress">
-                    ◐ In Progress
+                    <i class="fa-solid fa-circle-half-stroke" style="color: var(--color-warning); font-size: 0.8rem"></i> In Progress
                   </button>
                   <button class="filter-btn" data-status="resolved">
-                    ✓ Resolved
+                    <i class="fa-solid fa-check" style="color: var(--color-success)"></i> Resolved
                   </button>
                 </div>
               </div>
@@ -555,7 +572,18 @@
                     aria-label="Search resources"
                   />
                 </div>
-                <div class="tag-filters" id="tag-filters"></div>
+                <div class="custom-dropdown-wrapper" id="resource-tag-dropdown-wrapper">
+                  <div class="custom-dropdown-header" id="custom-dropdown-header">
+                    <span id="selected-filter-text">Filter: All</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                  <div class="custom-dropdown-content" id="custom-dropdown-content">
+                    <div class="dropdown-search-container">
+                      <input type="text" class="custom-dropdown-search" id="custom-dropdown-search" placeholder="Search filters..." />
+                    </div>
+                    <div class="dropdown-options" id="tag-filters"></div>
+                  </div>
+                </div>
               </div>
               <div class="resources-grid" id="resources-grid"></div>
             </div>
@@ -575,19 +603,19 @@
                         class="btn btn-secondary btn-ripple"
                         id="graph-zoom-in"
                       >
-                        <span style="font-size: 1.2rem">+</span> Zoom In
+                        <i class="fa-solid fa-plus"></i> Zoom In
                       </button>
                       <button
                         class="btn btn-secondary btn-ripple"
                         id="graph-zoom-out"
                       >
-                        <span style="font-size: 1.2rem">−</span> Zoom Out
+                        <i class="fa-solid fa-minus"></i> Zoom Out
                       </button>
                       <button
                         class="btn btn-secondary btn-ripple"
                         id="graph-reset"
                       >
-                        <span style="font-size: 1.2rem">⟲</span> Reset View
+                        <i class="fa-solid fa-rotate-left"></i> Reset View
                       </button>
                     </div>
                     <div class="graph-legend-section">
@@ -598,7 +626,7 @@
                       ></div>
                     </div>
                     <div class="graph-tip">
-                      💡 <strong>Tip:</strong> Hover over nodes to see
+                      <i class="fa-regular fa-lightbulb" style="color: var(--color-warning)"></i> <strong>Tip:</strong> Hover over nodes to see
                       connections. Drag nodes to rearrange. Use scroll to zoom.
                     </div>
                   </div>
@@ -634,6 +662,45 @@
               <div class="health-grid" id="health-grid"></div>
             </div>
           </section>
+          <!-- ========== CALENDAR VIEW ========== -->
+          <section id="calendar-view" class="view">
+            <div class="calendar-container">
+              <div class="calendar-header">
+                <div class="calendar-nav">
+                  <button class="btn btn-icon btn-secondary" id="calendar-prev" aria-label="Previous Month"><i class="fa-solid fa-chevron-left"></i></button>
+                  <h2 class="calendar-title gradient-text" id="calendar-current-month">Month Year</h2>
+                  <button class="btn btn-icon btn-secondary" id="calendar-next" aria-label="Next Month"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-actions">
+                  <button class="btn btn-secondary btn-sm" id="calendar-today">Today</button>
+                </div>
+              </div>
+              <div class="calendar-grid-wrapper aurora-bg">
+                <div class="calendar-weekdays">
+                  <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+              </div>
+            </div>
+            
+            <!-- Context panel for clicked date -->
+            <div id="calendar-day-panel" class="calendar-day-panel hidden">
+              <div class="day-panel-header">
+                <h3 id="panel-date-title">Date</h3>
+                <button class="btn btn-icon" id="close-day-panel"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <div class="day-panel-content">
+                <div class="day-panel-section">
+                  <h4><i class="fa-solid fa-graduation-cap"></i> Lectures</h4>
+                  <div id="day-panel-lectures"></div>
+                </div>
+                <div class="day-panel-section">
+                  <h4><i class="fa-solid fa-list-check"></i> Tasks Due</h4>
+                  <div id="day-panel-tasks"></div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </div>
@@ -655,6 +722,7 @@
     <script src="js/knowledge-graph.js"></script>
     <script src="js/subject-health.js"></script>
     <script src="js/context-adapter.js"></script>
+    <script src="js/calendar.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

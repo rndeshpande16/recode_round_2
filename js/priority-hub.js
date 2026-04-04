@@ -32,14 +32,14 @@ const PriorityHub = {
 
   _getTypeIcon(type) {
     const icons = {
-      assignment: "📝",
-      homework: "📖",
-      project: "🛠️",
-      exam: "🎓",
-      lab: "🔬",
-      quiz: "❓",
+      assignment: '<i class="fa-solid fa-file-pen"></i>',
+      homework: '<i class="fa-solid fa-book-open"></i>',
+      project: '<i class="fa-solid fa-tools"></i>',
+      exam: '<i class="fa-solid fa-graduation-cap"></i>',
+      lab: '<i class="fa-solid fa-microscope"></i>',
+      quiz: '<i class="fa-solid fa-circle-question"></i>',
     };
-    return icons[type] || "📌";
+    return icons[type] || '<i class="fa-solid fa-thumbtack"></i>';
   },
 
   // ===== Dashboard Priority Hub =====
@@ -58,7 +58,7 @@ const PriorityHub = {
 
     if (tasks.length === 0) {
       container.innerHTML =
-        '<div class="empty-state"><div class="empty-state-icon">🎉</div><div class="empty-state-text">All tasks completed!</div></div>';
+        '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-party-horn"></i></div><div class="empty-state-text">All tasks completed!</div></div>';
       return;
     }
 
@@ -84,8 +84,8 @@ const PriorityHub = {
           </div>
           <div class="task-gravity-score ${cls}">${t.gravity}</div>
           <div class="task-item-actions" style="display:flex;gap:4px;align-items:center;margin-left:var(--space-sm);">
-            <button class="btn-icon" onclick="event.stopPropagation(); PriorityHub.openEditModal('${t.id}')" title="Edit">✏️</button>
-            <button class="btn-icon" onclick="event.stopPropagation(); PriorityHub.deleteTask('${t.id}')" title="Delete" style="color:var(--color-danger);">🗑️</button>
+            <button class="btn-icon" onclick="event.stopPropagation(); PriorityHub.openEditModal('${t.id}')" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button class="btn-icon" onclick="event.stopPropagation(); PriorityHub.deleteTask('${t.id}')" title="Delete" style="color:var(--color-danger);"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>`;
       })
@@ -138,7 +138,7 @@ const PriorityHub = {
 
     if (tasks.length === 0) {
       container.innerHTML =
-        '<div class="empty-state"><div class="empty-state-icon">🎉</div><div class="empty-state-text">No tasks match your filter</div></div>';
+        '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-party-horn"></i></div><div class="empty-state-text">No tasks match your filter</div></div>';
       return;
     }
 
@@ -162,8 +162,8 @@ const PriorityHub = {
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-xs);">
               <div class="task-gravity-score ${cls}">${t.gravity}</div>
               <div style="display:flex;gap:2px;">
-                <button class="btn-icon" onclick="PriorityHub.openEditModal('${t.id}')" title="Edit" style="width:24px;height:24px;font-size:0.75rem;">✏️</button>
-                <button class="btn-icon" onclick="PriorityHub.deleteTask('${t.id}')" title="Delete" style="width:24px;height:24px;font-size:0.75rem;color:var(--color-danger);">🗑️</button>
+                <button class="btn-icon" onclick="PriorityHub.openEditModal('${t.id}')" title="Edit" style="width:24px;height:24px;font-size:0.75rem;"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="btn-icon" onclick="PriorityHub.deleteTask('${t.id}')" title="Delete" style="width:24px;height:24px;font-size:0.75rem;color:var(--color-danger);"><i class="fa-solid fa-trash"></i></button>
               </div>
             </div>
           </div>
@@ -201,7 +201,7 @@ const PriorityHub = {
         App.showConfetti();
       }
 
-      App.showToast("✅", `"${task.title}" completed!`);
+      App.showToast('<i class="fa-solid fa-circle-check"></i>', `"${task.title}" completed!`);
 
       NexusData.saveTasks();
 
@@ -213,7 +213,7 @@ const PriorityHub = {
       }, 600);
     } else {
       NexusData.saveTasks();
-      App.showToast("↩️", `"${task.title}" reopened`);
+      App.showToast('<i class="fa-solid fa-arrow-rotate-left"></i>', `"${task.title}" reopened`);
       this.renderDashboardTasks();
       this.renderTasksView(this._currentFilter(), this._currentSearch());
       App.updateStats();
@@ -312,7 +312,7 @@ const PriorityHub = {
           <div class="modal-footer">
             <button class="btn btn-secondary" onclick="PriorityHub.closeModal()">Cancel</button>
             <button class="btn btn-primary btn-ripple" type="submit" form="task-form">
-              ${this.editingTaskId ? "💾 Save Changes" : "➕ Add Task"}
+              ${this.editingTaskId ? '<i class="fa-solid fa-floppy-disk"></i> Save Changes' : '<i class="fa-solid fa-plus"></i> Add Task'}
             </button>
           </div>
         </div>
@@ -347,7 +347,7 @@ const PriorityHub = {
         task.type = type;
         task.dueDate = dueDate;
         task.gradeWeight = gradeWeight;
-        App.showToast("💾", `Task "${title}" updated`);
+        App.showToast('<i class="fa-solid fa-floppy-disk"></i>', `Task "${title}" updated`);
       }
     } else {
       const newId = "t" + (Date.now() % 100000);
@@ -361,7 +361,7 @@ const PriorityHub = {
         gradeWeight,
         completed: false,
       });
-      App.showToast("➕", `Task "${title}" added`);
+      App.showToast('<i class="fa-solid fa-plus"></i>', `Task "${title}" added`);
     }
 
     NexusData.saveTasks();
@@ -384,7 +384,7 @@ const PriorityHub = {
 
     NexusData.saveTasks();
 
-    App.showToast("🗑️", `Task "${task.title}" deleted`);
+    App.showToast('<i class="fa-solid fa-trash"></i>', `Task "${task.title}" deleted`);
     this.renderDashboardTasks();
     this.renderTasksView(this._currentFilter(), this._currentSearch());
     App.updateStats();

@@ -43,7 +43,7 @@ const ContextAdapter = {
       this.isSimulating = false;
       this.simulatedClass = null;
       this.deactivateSessionMode();
-      App.showToast("📡", "Class simulation ended");
+      App.showToast('<i class="fa-solid fa-satellite-dish"></i>', "Class simulation ended");
     } else {
       const classes = NexusData.getTodayClasses();
       let classToSim =
@@ -60,7 +60,7 @@ const ContextAdapter = {
       this.isSimulating = true;
       this.simulatedClass = classToSim;
       this.activateSessionMode(classToSim);
-      App.showToast("📡", `Simulating: ${classToSim.subject.name}`);
+      App.showToast('<i class="fa-solid fa-satellite-dish"></i>', `Simulating: ${classToSim.subject.name}`);
     }
   },
 
@@ -77,12 +77,16 @@ const ContextAdapter = {
   // ---- NEW FOCUS MODES ----
   activateMode(mode) {
     if (this.currentMode === mode) return;
+    
+    // Ensure we are on the dashboard to see the mode UI
+    App.navigateTo("dashboard");
+    
     this.currentMode = mode;
     document.body.classList.add("mode-active");
 
     this.showContextBanner(mode);
     this.collapseDashboardAndShowMode(mode);
-    App.showToast("✨", `Entered ${mode.replace("_", " ").toUpperCase()} Mode`);
+    App.showToast('<i class="fa-solid fa-wand-magic-sparkles"></i>', `Entered ${mode.replace("_", " ").toUpperCase()} Mode`);
   },
 
   exitMode() {
@@ -111,7 +115,7 @@ const ContextAdapter = {
     if (banner) banner.remove();
 
     this.restoreDashboard();
-    App.showToast("🔙", `Returned to Dashboard`);
+    App.showToast('<i class="fa-solid fa-arrow-left"></i>', `Returned to Dashboard`);
   },
 
   showContextBanner(mode, classInfo = null) {
@@ -128,10 +132,10 @@ const ContextAdapter = {
     let title = mode;
     let sub = "Focus Mode Active";
     if (mode === "lecture" && classInfo) {
-      title = `📡 ${classInfo.subject.name} — In Session`;
+      title = `<i class="fa-solid fa-satellite-dish"></i> ${classInfo.subject.name} — In Session`;
       sub = `${classInfo.room} · ${this._formatTime(classInfo.startHour, classInfo.startMin)} – ${this._formatTime(classInfo.endHour, classInfo.endMin)}`;
     } else {
-      title = `🧠 ${mode.replace("_", " ").toUpperCase()}`;
+      title = `<i class="fa-solid fa-brain"></i> ${mode.replace("_", " ").toUpperCase()}`;
     }
 
     banner.innerHTML = `
@@ -182,7 +186,7 @@ const ContextAdapter = {
       livePanel.innerHTML = `
         <div class="card live-main-panel">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
-            <h2 class="card-title">📝 Live Notes — ${subjectName}</h2>
+            <h2 class="card-title"><i class="fa-solid fa-pen-to-square"></i> Live Notes — ${subjectName}</h2>
             <div style="display: flex; gap: 8px;">
                <input type="text" id="note-title-input" class="form-input-focus" placeholder="Title...">
                <button class="btn btn-primary btn-sm" onclick="ContextAdapter.saveCurrentNote()">Save</button>
@@ -196,18 +200,18 @@ const ContextAdapter = {
         <div style="display: contents;">
           <div class="card live-side-panel" style="grid-row: 1;">
             <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-              <h2 class="card-title">📚 Active Resources</h2>
-              <button class="btn btn-icon btn-sm" onclick="ContextAdapter.addActiveResource()" title="Add Resource">+</button>
+              <h2 class="card-title"><i class="fa-solid fa-book"></i> Active Resources</h2>
+              <button class="btn btn-icon btn-sm" onclick="ContextAdapter.addActiveResource()" title="Add Resource"><i class="fa-solid fa-plus"></i></button>
             </div>
             <div class="card-content" style="max-height: 250px; overflow-y: auto; padding-right: 4px;">
               <div class="live-resources-grid">
-                ${relatedResources.map((r) => `<div class="resource-quick-item" style="display: flex; align-items: center; justify-content: space-between;" onclick="ResourceManager.openPreview('${r.id}')"><div style="display: flex; align-items: center; overflow: hidden;"><span class="resource-quick-icon">${r.type === "pdf" ? "📄" : "🔗"}</span><span class="resource-quick-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.title}</span></div><button class="btn btn-icon btn-sm" style="color: var(--color-danger); padding:4px;" onclick="event.stopPropagation(); ContextAdapter.removeActiveResource('${r.id}')">🗑️</button></div>`).join("")}
+                ${relatedResources.map((r) => `<div class="resource-quick-item" style="display: flex; align-items: center; justify-content: space-between;" onclick="ResourceManager.openPreview('${r.id}')"><div style="display: flex; align-items: center; overflow: hidden;"><span class="resource-quick-icon">${r.type === "pdf" ? '<i class="fa-regular fa-file-pdf"></i>' : '<i class="fa-solid fa-link"></i>'}</span><span class="resource-quick-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.title}</span></div><button class="btn btn-icon btn-sm" style="color: var(--color-danger); padding:4px;" onclick="event.stopPropagation(); ContextAdapter.removeActiveResource('${r.id}')"><i class="fa-solid fa-trash"></i></button></div>`).join("")}
                 ${relatedResources.length === 0 ? '<div class="empty-state" style="padding: 10px;"><div class="empty-state-text" style="font-size:0.85rem;">No resources mapped. Manage them here.</div></div>' : ""}
               </div>
             </div>
           </div>
           <div class="card live-side-panel" style="grid-row: 2;">
-            <div class="card-header"><h2 class="card-title">🗂️ Saved Notes</h2></div>
+            <div class="card-header"><h2 class="card-title"><i class="fa-solid fa-folder-open"></i> Saved Notes</h2></div>
             <div class="card-content" id="saved-notes-list" style="padding: var(--space-sm); max-height: 250px; overflow-y: auto;">
             </div>
           </div>
@@ -217,7 +221,7 @@ const ContextAdapter = {
       livePanel.innerHTML = `
         <div class="card live-main-panel" style="min-height: 75vh; display: flex; flex-direction: column;">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
-            <h2 class="card-title">🧠 Deep Research & Work</h2>
+            <h2 class="card-title"><i class="fa-solid fa-brain"></i> Deep Research & Work</h2>
             <div style="display: flex; gap: 8px;">
                <input type="text" id="note-title-input" class="form-input-focus" placeholder="Title...">
                <button class="btn btn-primary btn-sm" onclick="ContextAdapter.saveCurrentNote()">Save</button>
@@ -229,7 +233,7 @@ const ContextAdapter = {
           </div>
         </div>
         <div class="card live-side-panel">
-          <div class="card-header"><h2 class="card-title">🗂️ Research Library</h2></div>
+          <div class="card-header"><h2 class="card-title"><i class="fa-solid fa-folder-open"></i> Research Library</h2></div>
           <div class="card-content" id="saved-notes-list" style="padding: var(--space-sm);">
           </div>
         </div>`;
@@ -238,7 +242,7 @@ const ContextAdapter = {
       livePanel.innerHTML = `
         <div class="card live-main-panel" style="min-height: 75vh; display: flex; flex-direction: column;">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-sm); flex-wrap: wrap; gap: 8px;">
-            <h2 class="card-title">⚡ Quick Notes (Plain Text)</h2>
+            <h2 class="card-title"><i class="fa-solid fa-bolt-lightning"></i> Quick Notes (Plain Text)</h2>
             <div style="display: flex; gap: 8px;">
                <input type="text" id="note-title-input" class="form-input-focus" placeholder="Title...">
                <button class="btn btn-primary btn-sm" onclick="ContextAdapter.saveCurrentNote()">Save</button>
@@ -250,7 +254,7 @@ const ContextAdapter = {
           </div>
         </div>
         <div class="card live-side-panel">
-          <div class="card-header"><h2 class="card-title">🗂️ Note Library</h2></div>
+          <div class="card-header"><h2 class="card-title"><i class="fa-solid fa-folder-open"></i> Note Library</h2></div>
           <div class="card-content" id="saved-notes-list" style="padding: var(--space-sm);">
           </div>
         </div>`;
@@ -286,7 +290,7 @@ const ContextAdapter = {
     };
     // Mutating Data Layer directly for demonstration inside Focus Mode
     NexusData.resources.push(newRes);
-    App.showToast("📚", "Resource attached to session");
+    App.showToast('<i class="fa-solid fa-book"></i>', "Resource attached to session");
     this.collapseDashboardAndShowMode(this.currentMode, this._currentClassInfo);
   },
 
@@ -295,7 +299,7 @@ const ContextAdapter = {
       confirm("Are you sure you want to unlink this resource from the session?")
     ) {
       NexusData.resources = NexusData.resources.filter((r) => r.id !== id);
-      App.showToast("🗑️", "Resource unlinked");
+      App.showToast('<i class="fa-solid fa-trash"></i>', "Resource unlinked");
       this.collapseDashboardAndShowMode(
         this.currentMode,
         this._currentClassInfo,
@@ -400,7 +404,7 @@ const ContextAdapter = {
     }
 
     this.renderSavedNotesUI();
-    if (!silent) App.showToast("💾", "Note saved to library");
+    if (!silent) App.showToast('<i class="fa-solid fa-floppy-disk"></i>', "Note saved to library");
   },
 
   loadNote(id) {
@@ -478,7 +482,7 @@ const ContextAdapter = {
     } else {
       this.renderSavedNotesUI();
     }
-    App.showToast("🗑️", "Note deleted");
+    App.showToast('<i class="fa-solid fa-trash"></i>', "Note deleted");
   },
 
   renderSavedNotesUI() {

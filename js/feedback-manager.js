@@ -11,9 +11,9 @@ const FeedbackManager = {
   },
 
   _statusIcon(status) {
-    if (status === "open") return "●";
-    if (status === "in-progress") return "◐";
-    return "✓";
+    if (status === "open") return '<i class="fa-solid fa-circle-dot"></i>';
+    if (status === "in-progress") return '<i class="fa-solid fa-circle-half-stroke"></i>';
+    return '<i class="fa-solid fa-circle-check"></i>';
   },
 
   _statusLabel(status) {
@@ -78,7 +78,7 @@ const FeedbackManager = {
 
     if (items.length === 0) {
       container.innerHTML =
-        '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">No feedback items match this filter</div></div>';
+        '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-inbox"></i></div><div class="empty-state-text">No feedback items match this filter</div></div>';
       return;
     }
 
@@ -101,19 +101,21 @@ const FeedbackManager = {
                 <span class="issue-meta-item"><span class="issue-professor">${f.professor}</span></span>
                 <span class="issue-meta-item">${subject ? subject.code : ""}</span>
                 <span class="issue-meta-item">${this._timeAgo(f.createdAt)}</span>
-                <span class="issue-meta-item">💬 ${f.replies.length}</span>
+                <span class="issue-meta-item"><i class="fa-regular fa-comment"></i> ${f.replies.length}</span>
               </div>
             </div>
             <div class="issue-actions" onclick="event.stopPropagation()">
               <div class="custom-dropdown" style="position:relative;">
                 <button class="status-select custom-dropdown-btn" onclick="FeedbackManager.toggleDropdown('${f.id}')" style="display:flex; align-items:center; gap:4px; border:1px solid var(--border-color); background:var(--bg-tertiary); padding:4px 12px; border-radius:12px; font-size:0.75rem; color:var(--text-secondary); cursor:pointer;">
                   <span>${this._statusIcon(f.status)} ${this._statusLabel(f.status)}</span>
-                  <span style="font-size:0.6rem; opacity:0.6; margin-left:4px;">▼</span>
+                  <span style="font-size:0.6rem; opacity:0.6; margin-left:4px;"><i class="fa-solid fa-chevron-down"></i></span>
                 </button>
                 <div class="custom-dropdown-menu" id="dropdown-${f.id}" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:var(--bg-secondary); border:1px solid var(--border-color); box-shadow:var(--shadow-md); border-radius:8px; z-index:100; min-width:130px; overflow:hidden;">
-                  <div class="dropdown-item" style="padding:8px 12px;margin:0; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'open')">● Open</div>
-                  <div class="dropdown-item" style="padding:8px 12px; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'in-progress')">◐ In Progress</div>
-                  <div class="dropdown-item" style="padding:8px 12px; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'resolved')">✓ Resolved</div>
+                <div class="custom-dropdown-menu" id="dropdown-${f.id}" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:var(--bg-secondary); border:1px solid var(--border-color); box-shadow:var(--shadow-md); border-radius:8px; z-index:100; min-width:130px; overflow:hidden;">
+                  <div class="dropdown-item" style="padding:8px 12px;margin:0; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'open')"><i class="fa-solid fa-circle-dot" style="color:var(--color-success)"></i> Open</div>
+                  <div class="dropdown-item" style="padding:8px 12px; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'in-progress')"><i class="fa-solid fa-circle-half-stroke" style="color:var(--color-warning)"></i> In Progress</div>
+                  <div class="dropdown-item" style="padding:8px 12px; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'resolved')"><i class="fa-solid fa-circle-check" style="color:var(--text-tertiary)"></i> Resolved</div>
+                </div>
                 </div>
               </div>
             </div>
@@ -182,7 +184,7 @@ const FeedbackManager = {
       this.renderFeedbackView(this.currentFilter);
       this.renderDashboardFeedback();
       App.showToast(
-        "✅",
+        '<i class="fa-solid fa-circle-check"></i>',
         `Issue status changed to ${this._statusLabel(newStatus)}`,
       );
     }
@@ -210,7 +212,7 @@ const FeedbackManager = {
       });
       NexusData.saveFeedback();
       this.renderFeedbackView(this.currentFilter);
-      App.showToast("💬", "Reply posted");
+      App.showToast('<i class="fa-solid fa-comment"></i>', "Reply posted");
       // Re-expand the card
       setTimeout(() => this.toggleExpand(id), 50);
     }

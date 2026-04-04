@@ -142,6 +142,7 @@ const App = {
     KnowledgeGraph.init();
     SubjectHealth.init();
     ContextAdapter.init();
+    CalendarController.init();
     Carousel.init();
     Particles.init();
     Parallax.init();
@@ -155,8 +156,10 @@ const App = {
     window.addEventListener('hashchange', () => this.handleHashChange());
     this.updateNavBadges();
     this.initMobileNav();
+    this.initSidebarToggle();
+    this.renderWelcome();
 
-    console.log('⚡ Nexus-Uni initialized');
+    console.log('Nexus-Uni initialized');
   },
 
   checkOnboarding() {
@@ -193,7 +196,7 @@ const App = {
       this.setStudentName(name);
       document.getElementById('modal-container').innerHTML = '';
       this.showConfetti();
-      this.showToast('🚀', `Welcome aboard, ${name}!`);
+      this.showToast('<i class="fa-solid fa-rocket"></i>', `Welcome aboard, ${name}!`);
     } else {
       if (input) input.style.border = '1px solid var(--color-danger)';
     }
@@ -207,7 +210,38 @@ const App = {
       if (hours < 12) timeOfDay = 'Morning';
       else if (hours < 17) timeOfDay = 'Afternoon';
       greeting.innerHTML = `Hi <span style="color:var(--text-primary); margin-left:2px;">${name}</span>`;
+      this.renderWelcome();
     }
+  },
+
+  renderWelcome() {
+    const welcomeSection = document.getElementById('welcome-section');
+    if (!welcomeSection) return;
+
+    const name = localStorage.getItem('nexus-student-name') || 'Scholar';
+    const hours = new Date().getHours();
+    let greeting = 'Good evening';
+    if (hours < 12) greeting = 'Good morning';
+    else if (hours < 17) greeting = 'Good afternoon';
+
+    welcomeSection.innerHTML = `
+      <div class="welcome-card" data-scroll="fade-up">
+        <div class="welcome-content">
+          <h1 class="welcome-title">${greeting}, <span class="gradient-text">${name}</span></h1>
+          <p class="welcome-subtitle">Your academic command center is synchronized and ready for action.</p>
+        </div>
+        <div class="welcome-stats">
+          <div class="welcome-stat">
+            <span class="stat-num">${NexusData.tasks.filter(t => !t.completed).length}</span>
+            <span class="stat-desc">Pending Tasks</span>
+          </div>
+          <div class="welcome-stat">
+            <span class="stat-num">${NexusData.getTodayClasses().length}</span>
+            <span class="stat-desc">Classes Today</span>
+          </div>
+        </div>
+      </div>
+    `;
   },
 
   initNavigation() {
@@ -244,6 +278,7 @@ const App = {
 
     const titles = {
       dashboard: 'Dashboard',
+      calendar: 'Calendar',
       tasks: 'Tasks',
       feedback: 'Feedback Loop',
       resources: 'Resource Shelf',
@@ -255,6 +290,9 @@ const App = {
 
     window.location.hash = view;
 
+    if (view === 'calendar') {
+      setTimeout(() => CalendarController.render(), 100);
+    }
     if (view === 'graph') {
       setTimeout(() => KnowledgeGraph.render(), 100);
     }
@@ -269,7 +307,7 @@ const App = {
 
   handleHashChange() {
     const hash = window.location.hash.replace('#', '');
-    const validViews = ['dashboard', 'tasks', 'feedback', 'resources', 'graph', 'health'];
+    const validViews = ['dashboard', 'calendar', 'tasks', 'feedback', 'resources', 'graph', 'health'];
     if (hash && validViews.includes(hash)) {
       this.navigateTo(hash);
     }
@@ -314,7 +352,7 @@ const App = {
     const todayClasses = NexusData.getTodayClasses();
 
     if (todayClasses.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🎉</div><div class="empty-state-text">No classes today!</div></div>';
+      container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><i class="fa-solid fa-face-smile-beam"></i></div><div class="empty-state-text">No classes today!</div></div>';
       return;
     }
 
@@ -352,7 +390,7 @@ const App = {
       .slice(0, 8); // show max 8
 
     if (pending.length === 0) {
-      container.innerHTML = '<div class="empty-state" style="padding:var(--space-lg);width:100%;"><div class="empty-state-text">No upcoming tasks! 🎉</div></div>';
+      container.innerHTML = '<div class="empty-state" style="padding:var(--space-lg);width:100%;"><div class="empty-state-text">No upcoming tasks! <i class="fa-solid fa-face-smile-beam"></i></div></div>';
       return;
     }
 
@@ -396,6 +434,15 @@ const App = {
 
     if (overlay) {
       overlay.addEventListener('click', () => this.closeMobileSidebar());
+    }
+  },
+
+  initSidebarToggle() {
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('sidebar-collapsed');
+      });
     }
   },
 
@@ -526,8 +573,8 @@ const App = {
 
     inc.innerHTML = `
       <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
-        <span style="color:var(--color-success);">💡 <strong>Strong:</strong> ${strong.map(s => s.code).join(', ')}</span>
-        <span style="color:var(--color-warning);">⚠️ <strong>Focus:</strong> ${weak.code}</span>
+        <span style="color:var(--color-success);"><i class="fa-regular fa-lightbulb"></i> <strong>Strong:</strong> ${strong.map(s => s.code).join(', ')}</span>
+        <span style="color:var(--color-warning);"><i class="fa-solid fa-triangle-exclamation"></i> <strong>Focus:</strong> ${weak.code}</span>
       </div>
       <p style="color:var(--text-secondary); margin:0;">You are excelling in <strong>${strong[0].name}</strong> with a live grade of ${strong[0].grade}%. Try to allocate more time to <strong>${weak.name}</strong> to improve its ${weak.grade}% standing.</p>
     `;
