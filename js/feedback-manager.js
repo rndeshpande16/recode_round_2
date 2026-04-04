@@ -111,11 +111,9 @@ const FeedbackManager = {
                   <span style="font-size:0.6rem; opacity:0.6; margin-left:4px;"><i class="fa-solid fa-chevron-down"></i></span>
                 </button>
                 <div class="custom-dropdown-menu" id="dropdown-${f.id}" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:var(--bg-secondary); border:1px solid var(--border-color); box-shadow:var(--shadow-md); border-radius:8px; z-index:100; min-width:130px; overflow:hidden;">
-                <div class="custom-dropdown-menu" id="dropdown-${f.id}" style="display:none; position:absolute; top:100%; right:0; margin-top:4px; background:var(--bg-secondary); border:1px solid var(--border-color); box-shadow:var(--shadow-md); border-radius:8px; z-index:100; min-width:130px; overflow:hidden;">
                   <div class="dropdown-item" style="padding:8px 12px;margin:0; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'open')"><i class="fa-solid fa-circle-dot" style="color:var(--color-success)"></i> Open</div>
                   <div class="dropdown-item" style="padding:8px 12px; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'in-progress')"><i class="fa-solid fa-circle-half-stroke" style="color:var(--color-warning)"></i> In Progress</div>
                   <div class="dropdown-item" style="padding:8px 12px; cursor:pointer; font-size:0.8rem; transition:background 0.2s; color:var(--text-primary);" onmouseover="this.style.background='var(--color-primary-subtle)'" onmouseout="this.style.background='transparent'" onclick="FeedbackManager.changeStatus('${f.id}', 'resolved')"><i class="fa-solid fa-circle-check" style="color:var(--text-tertiary)"></i> Resolved</div>
-                </div>
                 </div>
               </div>
             </div>

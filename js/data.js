@@ -6,7 +6,7 @@
 const NexusData = {
   // ========== STUDENT ==========
   student: {
-    name: localStorage.getItem("nexus-student-name") || "Alex Chen",
+    name: localStorage.getItem("nexus-student-name"),
     major: "Computer Science",
     year: "Junior",
     gpa: 3.72,
@@ -369,7 +369,7 @@ const NexusData = {
       createdAt: "2026-03-28T10:30:00",
       replies: [
         {
-          author: localStorage.getItem("nexus-student-name") || "Alex Chen",
+          author: localStorage.getItem("nexus-student-name"),
           content:
             "Thank you for the feedback. I'll review the deletion cases and fix the successor replacement logic.",
           time: "2026-03-28T14:15:00",
@@ -387,7 +387,7 @@ const NexusData = {
       createdAt: "2026-03-30T09:00:00",
       replies: [
         {
-          author: localStorage.getItem("nexus-student-name") || "Alex Chen",
+          author: localStorage.getItem("nexus-student-name"),
           content:
             "I see the issue. I'm refactoring to use pthread_cond_wait/signal instead of the spin lock.",
           time: "2026-03-30T15:30:00",
@@ -411,7 +411,7 @@ const NexusData = {
       createdAt: "2026-03-25T14:00:00",
       replies: [
         {
-          author: localStorage.getItem("nexus-student-name") || "Alex Chen",
+          author: localStorage.getItem("nexus-student-name"),
           content:
             "Thank you! I'll definitely look into Adam and compare convergence rates.",
           time: "2026-03-25T16:00:00",
@@ -451,7 +451,7 @@ const NexusData = {
       createdAt: "2026-03-27T13:30:00",
       replies: [
         {
-          author: localStorage.getItem("nexus-student-name") || "Alex Chen",
+          author: localStorage.getItem("nexus-student-name"),
           content:
             "Thanks! I'll revise the results section to use more active voice.",
           time: "2026-03-27T17:00:00",
