@@ -12,7 +12,8 @@ const FeedbackManager = {
 
   _statusIcon(status) {
     if (status === "open") return '<i class="fa-solid fa-circle-dot"></i>';
-    if (status === "in-progress") return '<i class="fa-solid fa-circle-half-stroke"></i>';
+    if (status === "in-progress")
+      return '<i class="fa-solid fa-circle-half-stroke"></i>';
     return '<i class="fa-solid fa-circle-check"></i>';
   },
 
@@ -124,7 +125,7 @@ const FeedbackManager = {
                 .map(
                   (r) => `
                 <div class="thread-item">
-                  <div class="thread-author">${r.author}</div>
+                  <div class="thread-author">${r.author || localStorage.getItem("nexus-student-name")}</div>
                   <div class="thread-time">${this._timeAgo(r.time)}</div>
                   <div class="thread-content">${r.content}</div>
                 </div>
@@ -155,7 +156,7 @@ const FeedbackManager = {
     document.querySelectorAll(".custom-dropdown-menu").forEach((el) => {
       if (el.id !== `dropdown-${id}`) el.style.display = "none";
     });
-    
+
     document.querySelectorAll(".issue-card").forEach((card) => {
       card.style.zIndex = "";
       card.style.position = "";
@@ -165,7 +166,7 @@ const FeedbackManager = {
     if (menu) {
       const isHidden = menu.style.display === "none";
       menu.style.display = isHidden ? "block" : "none";
-      
+
       const card = document.getElementById(`issue-${id}`);
       if (card && isHidden) {
         card.style.position = "relative";
@@ -190,7 +191,7 @@ const FeedbackManager = {
     document
       .querySelectorAll(".custom-dropdown-menu")
       .forEach((el) => (el.style.display = "none"));
-      
+
     document.querySelectorAll(".issue-card").forEach((card) => {
       card.style.zIndex = "";
       card.style.position = "";
@@ -204,7 +205,8 @@ const FeedbackManager = {
     const feedback = NexusData.feedback.find((f) => f.id === id);
     if (feedback) {
       feedback.replies.push({
-        author: NexusData.student.name,
+        author:
+          NexusData.student.name || localStorage.getItem("nexus-student-name"),
         content: textarea.value.trim(),
         time: new Date().toISOString(),
       });
