@@ -244,3 +244,8 @@
     font-size: 1.1rem !important;
   }
 }
+
+.welcome-card {
+  opacity: 1 !important;
+  margin-bottom: 70px;
+}
